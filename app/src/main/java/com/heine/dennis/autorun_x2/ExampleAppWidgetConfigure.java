@@ -151,6 +151,7 @@ public class ExampleAppWidgetConfigure extends AppCompatActivity {
         }
         else
         {
+            ExampleAppWidgetProvider.willbedeleted=true;
             Context context = getApplicationContext();
             CharSequence text = "One widget maximum. Please remove old widget first.";
             int duration = Toast.LENGTH_SHORT;

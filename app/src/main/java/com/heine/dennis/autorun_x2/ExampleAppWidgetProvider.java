@@ -18,15 +18,21 @@ import android.widget.Toast;
 public class ExampleAppWidgetProvider extends AppWidgetProvider {
     public static boolean started=false;
     public static boolean config_done=false;
+    public static boolean willbedeleted=false;
     private static Context _context=null;
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-
-        config_done=false;
-        SharedPreferences settings = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
-        SharedPreferences.Editor edit = settings.edit();
-        edit.putString("intent", "");
-        edit.apply();
+        if(!willbedeleted) {
+            config_done = false;
+            SharedPreferences settings = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+            SharedPreferences.Editor edit = settings.edit();
+            edit.putString("intent", "");
+            edit.apply();
+        }
+        else
+        {
+            willbedeleted=false;
+        }
     }
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -56,6 +62,7 @@ public class ExampleAppWidgetProvider extends AppWidgetProvider {
         String classname=settings.getString("intent","");
         if(!started && classname!="")
         {
+            willbedeleted=true;
             started=true;
 
             Intent intent = context.getApplicationContext().getPackageManager().getLaunchIntentForPackage(classname);

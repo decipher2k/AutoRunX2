@@ -21,7 +21,12 @@ public class ExampleAppWidgetProvider extends AppWidgetProvider {
     private static Context _context=null;
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
+
         config_done=false;
+        SharedPreferences settings = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = settings.edit();
+        edit.putString("intent", "");
+        edit.apply();
     }
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -47,11 +52,12 @@ public class ExampleAppWidgetProvider extends AppWidgetProvider {
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
 
-        if(!started && config_done)
+        SharedPreferences settings = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+        String classname=settings.getString("intent","");
+        if(!started && classname!="")
         {
             started=true;
-            SharedPreferences settings = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
-            String classname=settings.getString("intent","");
+
             Intent intent = context.getApplicationContext().getPackageManager().getLaunchIntentForPackage(classname);
             if (intent != null) {
 

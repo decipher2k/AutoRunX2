@@ -54,7 +54,9 @@ public class ExampleAppWidgetConfigure extends AppCompatActivity {
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
-        if ( !ExampleAppWidgetProvider.config_done/*widgetExists(getApplicationContext(), appWidgetId1)*/) {
+        SharedPreferences settings = getApplicationContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        String classname=settings.getString("intent","");
+        if ( classname==""/*widgetExists(getApplicationContext(), appWidgetId1)*/) {
             Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
             mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             ExampleAppWidgetProvider.started=true;

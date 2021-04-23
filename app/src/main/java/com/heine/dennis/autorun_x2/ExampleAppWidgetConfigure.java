@@ -54,10 +54,10 @@ public class ExampleAppWidgetConfigure extends AppCompatActivity {
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
-        if (!widgetExists(getApplicationContext(), appWidgetId1)) {
+        if ( !ExampleAppWidgetProvider.config_done/*widgetExists(getApplicationContext(), appWidgetId1)*/) {
             Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
             mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-
+            ExampleAppWidgetProvider.started=true;
             PackageManager pm = getPackageManager();
 
         /*
@@ -111,6 +111,7 @@ public class ExampleAppWidgetConfigure extends AppCompatActivity {
                             Intent resultValue = new Intent();
                             resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                             setResult(RESULT_OK, resultValue);
+                            ExampleAppWidgetProvider.config_done=true;
                             finish();
 
                         }
@@ -149,7 +150,7 @@ public class ExampleAppWidgetConfigure extends AppCompatActivity {
         else
         {
             Context context = getApplicationContext();
-            CharSequence text = "One startup task is the maximum.";
+            CharSequence text = "One widget maximum. Please remove old widget first.";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);

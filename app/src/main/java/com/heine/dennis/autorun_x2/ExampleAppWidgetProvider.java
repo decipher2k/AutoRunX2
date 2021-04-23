@@ -9,14 +9,24 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 public class ExampleAppWidgetProvider extends AppWidgetProvider {
     public static boolean started=false;
+    public static boolean config_done=false;
+    private static Context _context=null;
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        config_done=false;
+    }
+
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         final int N = appWidgetIds.length;
-
+        _context=context;
         // Perform this loop procedure for each App Widget that belongs to this provider
         for (int i=0; i<N; i++) {
             int appWidgetId = appWidgetIds[i];
@@ -28,13 +38,16 @@ public class ExampleAppWidgetProvider extends AppWidgetProvider {
             // Get the layout for the App Widget and attach an on-click listener
             // to the button
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.example_appwidget);
-            //views.setOnClickPendingIntent(R.id.button, pendingIntent);
+           // views.setOnClickPendingIntent(R.id.button, pendingIntent);
+
+
+
 
             // Tell the AppWidgetManager to perform an update on the current app widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
 
-        if(!started)
+        if(!started && config_done)
         {
             started=true;
             SharedPreferences settings = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
@@ -50,5 +63,8 @@ public class ExampleAppWidgetProvider extends AppWidgetProvider {
             intent.setComponent(new ComponentName("com.termux","com.termux.MainActivity"));
             context.startActivity(intent);*/
         }
+
+
     }
+
 }
